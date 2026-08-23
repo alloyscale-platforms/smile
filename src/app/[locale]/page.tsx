@@ -36,19 +36,19 @@ export default async function HomePage({
   return (
     <div className="flex flex-col gap-16">
       <section
-        className="flex flex-col items-start gap-6 rounded-3xl border border-border p-8 sm:p-12"
+        className="flex flex-col items-center gap-6 rounded-3xl border border-border p-8 sm:p-12"
         style={{
           background:
             "linear-gradient(135deg, color-mix(in srgb, var(--accent) 12%, var(--background)), color-mix(in srgb, var(--accent-secondary) 10%, var(--background)))",
         }}
       >
-        <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl">
+        <h1 className="text-center text-4xl font-extrabold leading-tight sm:text-5xl">
           {dict.home.heroTitle}
         </h1>
         {/* <p className="max-w-2xl text-lg leading-relaxed">{dict.home.heroSubtitle}</p> */}
         {homeBodyHtml && (
           <div
-            className="max-w-2xl rounded-2xl border border-border bg-surface p-4 leading-relaxed shadow-warm-sm [&_a]:underline [&_a]:text-accent [&_p+p]:mt-3"
+            className="max-w-2xl rounded-2xl border border-border bg-surface p-4 text-center leading-relaxed shadow-warm-sm [&_a]:underline [&_a]:text-accent [&_p+p]:mt-3"
             dangerouslySetInnerHTML={{ __html: homeBodyHtml }}
           />
         )}
@@ -126,8 +126,8 @@ export default async function HomePage({
       </section>
 
       <section className="tint-panel rounded-2xl border border-highlight/40 bg-highlight/10 p-6">
-        <h2 className="mb-2 text-xl font-bold">{dict.home.trustTitle}</h2>
-        <p className="leading-relaxed">{dict.home.trustBody}</p>
+        <h2 className="mb-2 text-xl font-bold text-center">{dict.home.trustTitle}</h2>
+        <p className="leading-relaxed text-center">{dict.home.trustBody}</p>
       </section>
     </div>
   );
