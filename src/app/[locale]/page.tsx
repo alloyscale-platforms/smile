@@ -78,13 +78,18 @@ export default async function HomePage({
           ].map(([title, body], i) => (
             <div
               key={title}
-              className="flex flex-col gap-3 rounded-2xl border border-border bg-surface p-6 shadow-warm-sm transition-warm hover:-translate-y-1 hover:shadow-warm-md"
+              className="flex items-start gap-3 rounded-2xl border border-border bg-surface p-5 shadow-warm-sm transition-warm hover:-translate-y-1 hover:shadow-warm-md"
             >
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-sm font-bold text-accent-foreground">
+              <span
+                className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-lg leading-none font-bold ${CATEGORY_TINTS[i % CATEGORY_TINTS.length]}`}
+                aria-hidden
+              >
                 {i + 1}
               </span>
-              <h3 className="text-lg font-bold">{title}</h3>
-              <p className="leading-relaxed opacity-90">{body}</p>
+              <div>
+                <p className="font-semibold">{title}</p>
+                <p className="text-sm opacity-80">{body}</p>
+              </div>
             </div>
           ))}
         </div>

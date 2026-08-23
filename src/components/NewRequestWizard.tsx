@@ -38,7 +38,7 @@ export function NewRequestWizard({
         {stepTitles.map((title, i) => (
           <li key={title} className="flex items-center">
             <span
-              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-warm ${
+              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm leading-none font-bold transition-warm ${
                 i === step
                   ? "bg-accent text-accent-foreground shadow-warm-sm"
                   : i < step
