@@ -96,9 +96,9 @@ async function main() {
     create: {
       slug: "home",
       titleEn: "Neighbors helping neighbors",
-      titleVi: "Hàng xóm giúp đỡ hàng xóm",
+      titleVi: "Người Việt giúp người Việt",
       bodyEn: "Smile connects older adults who need a hand with younger volunteers nearby.",
-      bodyVi: "Smile kết nối các cô chú lớn tuổi cần giúp đỡ với các bạn trẻ tình nguyện gần đó.",
+      bodyVi: "Nụ Cười kết nối các cô chú lớn tuổi cần giúp đỡ với các bạn trẻ tình nguyện gần đó.",
     },
   });
 

@@ -1,5 +1,5 @@
 {
-  "appName": "Smile",
+  "appName": "Nụ Cười",
   "common": {
     "loading": "Đang tải…",
     "submit": "Gửi",
@@ -25,8 +25,8 @@
     "highContrast": "Độ tương phản cao"
   },
   "home": {
-    "heroTitle": "Hàng xóm giúp đỡ hàng xóm",
-    "heroSubtitle": "Smile kết nối các cô chú lớn tuổi trong cộng đồng cần giúp đỡ về dịch thuật, công nghệ, việc vặt và các cuộc hẹn, với các bạn trẻ gần đó sẵn lòng giúp đỡ.",
+    "heroTitle": "Người Việt giúp người Việt",
+    "heroSubtitle": "Nụ Cười kết nối các cô chú lớn tuổi trong cộng đồng cần giúp đỡ về dịch thuật, công nghệ, việc vặt và các cuộc hẹn, với các bạn trẻ gần đó sẵn lòng giúp đỡ.",
     "ctaNeedHelp": "Tôi cần giúp đỡ",
     "ctaWantToHelp": "Tôi muốn giúp đỡ",
     "howItWorksTitle": "Cách hoạt động",
