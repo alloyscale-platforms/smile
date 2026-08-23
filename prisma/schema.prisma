@@ -1,0 +1,98 @@
+// Prisma schema for Smile — elder/helper connection platform.
+// Role/status/urgency fields are plain strings (validated in app code with zod)
+// rather than Prisma enums — kept from when this schema also targeted SQLite,
+// which has no native enum support.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  phone        String?
+  role         String   @default("REQUESTER") // ADMIN | HELPER | REQUESTER
+  status       String   @default("PENDING") // PENDING | ACTIVE | SUSPENDED
+  locale       String   @default("vi") // en | vi
+  createdAt    DateTime @default(now())
+
+  requests       HelpRequest[]    @relation("Requester")
+  claimedRequests HelpRequest[]   @relation("Claimer")
+  messages       RequestMessage[]
+}
+
+model HelpCategory {
+  id        String  @id @default(cuid())
+  slug      String  @unique
+  labelEn   String
+  labelVi   String
+  icon      String
+  sortOrder Int     @default(0)
+  active    Boolean @default(true)
+
+  requests HelpRequest[]
+}
+
+model HelpRequest {
+  id            String    @id @default(cuid())
+  requesterId   String
+  requester     User      @relation("Requester", fields: [requesterId], references: [id])
+  categoryId    String
+  category      HelpCategory @relation(fields: [categoryId], references: [id])
+  title         String
+  description   String
+  urgency       String    @default("MEDIUM") // LOW | MEDIUM | HIGH
+  preferredWhen String?
+  neighborhood  String?
+  status        String    @default("OPEN") // OPEN | CLAIMED | IN_PROGRESS | COMPLETED | CANCELLED
+  claimedById   String?
+  claimedBy     User?     @relation("Claimer", fields: [claimedById], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  messages RequestMessage[]
+
+  @@index([status])
+  @@index([categoryId])
+}
+
+model RequestMessage {
+  id        String      @id @default(cuid())
+  requestId String
+  request   HelpRequest @relation(fields: [requestId], references: [id])
+  senderId  String
+  sender    User        @relation(fields: [senderId], references: [id])
+  body      String
+  createdAt DateTime    @default(now())
+
+  @@index([requestId])
+}
+
+model Page {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  titleEn   String
+  titleVi   String
+  bodyEn    String
+  bodyVi    String
+  updatedAt DateTime @updatedAt
+}
+
+model NotificationLog {
+  id        String   @id @default(cuid())
+  event     String
+  channel   String
+  payload   String
+  status    String // SENT | FAILED | SKIPPED
+  detail    String?
+  createdAt DateTime @default(now())
+
+  @@index([event])
+}
