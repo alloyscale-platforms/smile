@@ -19,9 +19,8 @@ export async function signup(
 ): Promise<AuthFormState> {
   const parsed = SignupSchema.safeParse({
     name: formData.get("name"),
-    email: formData.get("email") || undefined,
+    identifier: formData.get("identifier"),
     password: formData.get("password"),
-    phone: formData.get("phone") || undefined,
     role: formData.get("role"),
   });
 
@@ -34,13 +33,13 @@ export async function signup(
   if (email) {
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) {
-      return { errors: { email: "emailTaken" } };
+      return { errors: { identifier: "emailTaken" } };
     }
   }
   if (phone) {
     const existing = await prisma.user.findUnique({ where: { phone } });
     if (existing) {
-      return { errors: { phone: "phoneTaken" } };
+      return { errors: { identifier: "phoneTaken" } };
     }
   }
 

@@ -7,17 +7,27 @@ export function normalizePhone(phone: string): string {
   return phone.trim().replace(/[^\d+]/g, "");
 }
 
+/** One field, either shape: contains "@" → treated as email, else → phone. */
 export const SignupSchema = z
   .object({
     name: z.string().trim().min(2, "nameTooShort"),
-    email: z.string().trim().toLowerCase().pipe(z.email("invalidEmail")).optional(),
-    phone: z.string().trim().transform(normalizePhone).optional(),
+    identifier: z.string().trim().min(1, "emailOrPhoneRequired"),
     password: z.string().min(8, "passwordTooShort"),
     role: z.enum(["HELPER", "REQUESTER"]),
   })
-  .refine((data) => Boolean(data.email) || Boolean(data.phone), {
-    message: "emailOrPhoneRequired",
-    path: ["email"],
+  .refine(
+    (data) =>
+      !data.identifier.includes("@") ||
+      z.email().safeParse(data.identifier.trim().toLowerCase()).success,
+    { message: "invalidEmail", path: ["identifier"] },
+  )
+  .transform(({ identifier, ...rest }) => {
+    const isEmail = identifier.includes("@");
+    return {
+      ...rest,
+      email: isEmail ? identifier.trim().toLowerCase() : undefined,
+      phone: isEmail ? undefined : normalizePhone(identifier),
+    };
   });
 
 export const LoginSchema = z.object({

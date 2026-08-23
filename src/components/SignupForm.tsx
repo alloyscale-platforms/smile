@@ -43,28 +43,25 @@ export function SignupForm({
         {state?.errors?.name && <ErrorText>{dict.common.requiredField}</ErrorText>}
       </label>
 
-      <p className="text-sm opacity-80">{dict.auth.emailOrPhoneHint}</p>
-
       <label className="flex flex-col gap-1">
-        <span className="font-semibold">{dict.auth.emailLabel}</span>
-        <input name="email" type="email" className="rounded-lg border border-border p-3" />
-        {state?.errors?.email && (
+        <span className="font-semibold">{dict.auth.identifierLabel}</span>
+        <input
+          name="identifier"
+          type="text"
+          autoComplete="username"
+          required
+          placeholder={dict.auth.identifierPlaceholder}
+          className="rounded-lg border border-border p-3"
+        />
+        {state?.errors?.identifier && (
           <ErrorText>
-            {state.errors.email === "emailTaken"
+            {state.errors.identifier === "emailTaken"
               ? dict.auth.emailTaken
-              : state.errors.email === "emailOrPhoneRequired"
-                ? dict.auth.emailOrPhoneRequired
-                : dict.common.genericError}
-          </ErrorText>
-        )}
-      </label>
-
-      <label className="flex flex-col gap-1">
-        <span className="font-semibold">{dict.auth.phoneLabel}</span>
-        <input name="phone" type="tel" className="rounded-lg border border-border p-3" />
-        {state?.errors?.phone && (
-          <ErrorText>
-            {state.errors.phone === "phoneTaken" ? dict.auth.phoneTaken : dict.common.genericError}
+              : state.errors.identifier === "phoneTaken"
+                ? dict.auth.phoneTaken
+                : state.errors.identifier === "emailOrPhoneRequired"
+                  ? dict.auth.emailOrPhoneRequired
+                  : dict.common.genericError}
           </ErrorText>
         )}
       </label>

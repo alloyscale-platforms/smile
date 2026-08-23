@@ -5,7 +5,7 @@ describe("SignupSchema", () => {
   it("accepts a valid requester signup", () => {
     const result = SignupSchema.safeParse({
       name: "Nguyen Van A",
-      email: "a@example.com",
+      identifier: "a@example.com",
       password: "supersecret1",
       role: "REQUESTER",
     });
@@ -15,7 +15,7 @@ describe("SignupSchema", () => {
   it("rejects signing up directly as an admin", () => {
     const result = SignupSchema.safeParse({
       name: "Nguyen Van A",
-      email: "a@example.com",
+      identifier: "a@example.com",
       password: "supersecret1",
       role: "ADMIN",
     });
@@ -25,7 +25,7 @@ describe("SignupSchema", () => {
   it("rejects a password shorter than 8 characters", () => {
     const result = SignupSchema.safeParse({
       name: "Nguyen Van A",
-      email: "a@example.com",
+      identifier: "a@example.com",
       password: "short",
       role: "HELPER",
     });
@@ -35,42 +35,45 @@ describe("SignupSchema", () => {
   it("rejects an invalid email", () => {
     const result = SignupSchema.safeParse({
       name: "Nguyen Van A",
-      email: "not-an-email",
+      identifier: "not-an-email@",
       password: "supersecret1",
       role: "HELPER",
     });
     expect(result.success).toBe(false);
   });
 
-  it("lowercases and trims the email", () => {
+  it("lowercases and trims the email, and routes it to the email field", () => {
     const result = SignupSchema.safeParse({
       name: "Nguyen Van A",
-      email: "  A@Example.com  ",
+      identifier: "  A@Example.com  ",
       password: "supersecret1",
       role: "HELPER",
     });
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.email).toBe("a@example.com");
+      expect(result.data.phone).toBeUndefined();
     }
   });
 
-  it("accepts a signup with only a phone number, no email", () => {
+  it("accepts a phone number identifier and routes it to the phone field", () => {
     const result = SignupSchema.safeParse({
       name: "Nguyen Van A",
-      phone: "(555) 123-4567",
+      identifier: "(555) 123-4567",
       password: "supersecret1",
       role: "HELPER",
     });
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.phone).toBe("5551234567");
+      expect(result.data.email).toBeUndefined();
     }
   });
 
-  it("rejects a signup with neither email nor phone", () => {
+  it("rejects a signup with an empty identifier", () => {
     const result = SignupSchema.safeParse({
       name: "Nguyen Van A",
+      identifier: "",
       password: "supersecret1",
       role: "HELPER",
     });
