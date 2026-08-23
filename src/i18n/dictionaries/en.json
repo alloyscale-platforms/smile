@@ -22,7 +22,8 @@
     "signup": "Sign up",
     "logout": "Log out",
     "textSize": "Text size",
-    "highContrast": "High contrast"
+    "highContrast": "High contrast",
+    "menu": "Menu"
   },
   "home": {
     "heroTitle": "Neighbors helping neighbors",

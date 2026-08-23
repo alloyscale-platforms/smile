@@ -52,16 +52,16 @@ export default async function HomePage({
             dangerouslySetInnerHTML={{ __html: homeBodyHtml }}
           />
         )}
-        <div className="flex flex-wrap gap-4">
+        <div className="flex w-full flex-col gap-4 sm:w-auto sm:flex-row">
           <Link
             href={`/${locale}/signup?role=REQUESTER`}
-            className="rounded-full bg-accent px-8 py-4 text-lg font-semibold text-accent-foreground shadow-warm-md hover:-translate-y-0.5"
+            className="rounded-full bg-accent px-8 py-4 text-center text-lg font-semibold text-accent-foreground shadow-warm-md hover:-translate-y-0.5"
           >
             {dict.home.ctaNeedHelp}
           </Link>
           <Link
             href={`/${locale}/signup?role=HELPER`}
-            className="rounded-full bg-accent-secondary px-8 py-4 text-lg font-semibold text-accent-secondary-foreground shadow-warm-md hover:-translate-y-0.5"
+            className="rounded-full bg-accent-secondary px-8 py-4 text-center text-lg font-semibold text-accent-secondary-foreground shadow-warm-md hover:-translate-y-0.5"
           >
             {dict.home.ctaWantToHelp}
           </Link>

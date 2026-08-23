@@ -34,15 +34,27 @@ export function NewRequestWizard({
 
   return (
     <form action={action} className="flex max-w-xl flex-col gap-6">
-      <ol className="flex gap-2 text-sm font-semibold">
+      <ol className="flex items-center">
         {stepTitles.map((title, i) => (
-          <li
-            key={title}
-            className={`rounded-full px-3 py-1 ${
-              i === step ? "bg-accent text-accent-foreground" : "bg-surface opacity-60"
-            }`}
-          >
-            {i + 1}. {title}
+          <li key={title} className="flex items-center">
+            <span
+              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-warm ${
+                i === step
+                  ? "bg-accent text-accent-foreground shadow-warm-sm"
+                  : i < step
+                    ? "bg-accent-secondary text-accent-secondary-foreground"
+                    : "border border-border bg-surface opacity-60"
+              }`}
+              aria-current={i === step ? "step" : undefined}
+            >
+              {i + 1}
+            </span>
+            {i < stepTitles.length - 1 && (
+              <span
+                className={`h-0.5 w-6 sm:w-10 ${i < step ? "bg-accent-secondary" : "bg-border"}`}
+                aria-hidden
+              />
+            )}
           </li>
         ))}
       </ol>

@@ -27,7 +27,12 @@ export function LoginForm({ locale, dict }: { locale: Locale; dict: Dictionary }
         </p>
       )}
 
-      <SubmitButton pendingLabel={dict.common.loading}>{dict.auth.loginSubmit}</SubmitButton>
+      <SubmitButton
+        pendingLabel={dict.common.loading}
+        className="w-full rounded-full bg-accent px-6 py-3.5 text-base font-semibold text-accent-foreground shadow-warm-sm transition-warm hover:-translate-y-0.5 disabled:translate-y-0 disabled:opacity-60 sm:w-auto"
+      >
+        {dict.auth.loginSubmit}
+      </SubmitButton>
     </form>
   );
 }

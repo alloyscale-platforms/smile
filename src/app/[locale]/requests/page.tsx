@@ -35,11 +35,11 @@ export default async function BrowseRequestsPage({
     <div className="flex flex-col gap-6">
       <h1 className="text-3xl font-bold">{dict.requests.browseTitle}</h1>
 
-      <form className="flex flex-wrap gap-3" method="get">
+      <form className="flex flex-col gap-3 sm:flex-row sm:flex-wrap" method="get">
         <select
           name="category"
           defaultValue={category ?? ""}
-          className="rounded-lg border border-border p-2"
+          className="w-full rounded-lg border border-border p-3 sm:w-auto"
         >
           <option value="">{dict.requests.filterAll}</option>
           {categories.map((c) => {
@@ -55,7 +55,7 @@ export default async function BrowseRequestsPage({
         <select
           name="urgency"
           defaultValue={urgency ?? ""}
-          className="rounded-lg border border-border p-2"
+          className="w-full rounded-lg border border-border p-3 sm:w-auto"
         >
           <option value="">{dict.requests.filterUrgency}</option>
           <option value="HIGH">{dict.requests.urgencyHigh}</option>
@@ -63,7 +63,10 @@ export default async function BrowseRequestsPage({
           <option value="LOW">{dict.requests.urgencyLow}</option>
         </select>
 
-        <button type="submit" className="rounded-lg border border-border px-4 py-2 font-semibold">
+        <button
+          type="submit"
+          className="w-full rounded-lg border border-border px-4 py-3 font-semibold shadow-warm-sm hover:-translate-y-0.5 sm:w-auto"
+        >
           {dict.common.submit}
         </button>
       </form>
