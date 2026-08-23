@@ -47,7 +47,7 @@ export default async function AdminUsersPage({
                 return (
                   <tr key={u.id} className="border-b border-border">
                     <td className="p-2 font-semibold">{u.name}</td>
-                    <td className="p-2">{u.email}</td>
+                    <td className="p-2">{u.email ?? u.phone}</td>
                     <td className="p-2">
                       <form action={updateRole} className="flex items-center gap-2">
                         <select name="role" defaultValue={u.role} className="rounded border border-border p-1">

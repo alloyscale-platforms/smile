@@ -43,12 +43,18 @@ export function SignupForm({
         {state?.errors?.name && <ErrorText>{dict.common.requiredField}</ErrorText>}
       </label>
 
+      <p className="text-sm opacity-80">{dict.auth.emailOrPhoneHint}</p>
+
       <label className="flex flex-col gap-1">
         <span className="font-semibold">{dict.auth.emailLabel}</span>
-        <input name="email" type="email" required className="rounded-lg border border-border p-3" />
+        <input name="email" type="email" className="rounded-lg border border-border p-3" />
         {state?.errors?.email && (
           <ErrorText>
-            {state.errors.email === "emailTaken" ? dict.auth.emailTaken : dict.common.genericError}
+            {state.errors.email === "emailTaken"
+              ? dict.auth.emailTaken
+              : state.errors.email === "emailOrPhoneRequired"
+                ? dict.auth.emailOrPhoneRequired
+                : dict.common.genericError}
           </ErrorText>
         )}
       </label>
@@ -56,6 +62,11 @@ export function SignupForm({
       <label className="flex flex-col gap-1">
         <span className="font-semibold">{dict.auth.phoneLabel}</span>
         <input name="phone" type="tel" className="rounded-lg border border-border p-3" />
+        {state?.errors?.phone && (
+          <ErrorText>
+            {state.errors.phone === "phoneTaken" ? dict.auth.phoneTaken : dict.common.genericError}
+          </ErrorText>
+        )}
       </label>
 
       <label className="flex flex-col gap-1">

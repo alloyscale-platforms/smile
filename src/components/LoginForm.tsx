@@ -12,8 +12,14 @@ export function LoginForm({ locale, dict }: { locale: Locale; dict: Dictionary }
   return (
     <form action={action} className="flex max-w-md flex-col gap-5">
       <label className="flex flex-col gap-1">
-        <span className="font-semibold">{dict.auth.emailLabel}</span>
-        <input name="email" type="email" required className="rounded-lg border border-border p-3" />
+        <span className="font-semibold">{dict.auth.identifierLabel}</span>
+        <input
+          name="identifier"
+          type="text"
+          autoComplete="username"
+          required
+          className="rounded-lg border border-border p-3"
+        />
       </label>
 
       <label className="flex flex-col gap-1">

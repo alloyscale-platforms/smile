@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { createSession, deleteSession } from "@/lib/session";
-import { LoginSchema, SignupSchema } from "@/lib/validation";
+import { LoginSchema, SignupSchema, normalizePhone } from "@/lib/validation";
 import type { Locale } from "@/i18n/dictionaries";
 
 export type AuthFormState = {
@@ -19,7 +19,7 @@ export async function signup(
 ): Promise<AuthFormState> {
   const parsed = SignupSchema.safeParse({
     name: formData.get("name"),
-    email: formData.get("email"),
+    email: formData.get("email") || undefined,
     password: formData.get("password"),
     phone: formData.get("phone") || undefined,
     role: formData.get("role"),
@@ -31,9 +31,17 @@ export async function signup(
 
   const { name, email, password, phone, role } = parsed.data;
 
-  const existing = await prisma.user.findUnique({ where: { email } });
-  if (existing) {
-    return { errors: { email: "emailTaken" } };
+  if (email) {
+    const existing = await prisma.user.findUnique({ where: { email } });
+    if (existing) {
+      return { errors: { email: "emailTaken" } };
+    }
+  }
+  if (phone) {
+    const existing = await prisma.user.findUnique({ where: { phone } });
+    if (existing) {
+      return { errors: { phone: "phoneTaken" } };
+    }
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
@@ -51,7 +59,7 @@ export async function login(
   formData: FormData,
 ): Promise<AuthFormState> {
   const parsed = LoginSchema.safeParse({
-    email: formData.get("email"),
+    identifier: formData.get("identifier"),
     password: formData.get("password"),
   });
 
@@ -59,8 +67,10 @@ export async function login(
     return { errors: flattenZodErrors(parsed.error) };
   }
 
-  const { email, password } = parsed.data;
-  const user = await prisma.user.findUnique({ where: { email } });
+  const { identifier, password } = parsed.data;
+  const user = identifier.includes("@")
+    ? await prisma.user.findUnique({ where: { email: identifier.toLowerCase() } })
+    : await prisma.user.findUnique({ where: { phone: normalizePhone(identifier) } });
   if (!user) {
     return { message: "invalidCredentials" };
   }

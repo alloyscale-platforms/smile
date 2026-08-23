@@ -54,11 +54,38 @@ describe("SignupSchema", () => {
       expect(result.data.email).toBe("a@example.com");
     }
   });
+
+  it("accepts a signup with only a phone number, no email", () => {
+    const result = SignupSchema.safeParse({
+      name: "Nguyen Van A",
+      phone: "(555) 123-4567",
+      password: "supersecret1",
+      role: "HELPER",
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.phone).toBe("5551234567");
+    }
+  });
+
+  it("rejects a signup with neither email nor phone", () => {
+    const result = SignupSchema.safeParse({
+      name: "Nguyen Van A",
+      password: "supersecret1",
+      role: "HELPER",
+    });
+    expect(result.success).toBe(false);
+  });
 });
 
 describe("LoginSchema", () => {
   it("requires a non-empty password", () => {
-    const result = LoginSchema.safeParse({ email: "a@example.com", password: "" });
+    const result = LoginSchema.safeParse({ identifier: "a@example.com", password: "" });
     expect(result.success).toBe(false);
+  });
+
+  it("accepts a phone number as the identifier", () => {
+    const result = LoginSchema.safeParse({ identifier: "555-123-4567", password: "supersecret1" });
+    expect(result.success).toBe(true);
   });
 });

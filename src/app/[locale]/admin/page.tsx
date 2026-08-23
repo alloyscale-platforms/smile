@@ -48,7 +48,7 @@ export default async function AdminOverviewPage({
                 >
                   <div className="mr-auto">
                     <p className="font-semibold">{u.name}</p>
-                    <p className="text-sm opacity-70">{u.email}</p>
+                    <p className="text-sm opacity-70">{u.email ?? u.phone}</p>
                   </div>
                   <form action={approve} className="flex items-center gap-2">
                     <select

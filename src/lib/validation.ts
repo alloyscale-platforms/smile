@@ -1,16 +1,27 @@
 import { z } from "zod";
 import { URGENCIES } from "@/lib/constants";
 
-export const SignupSchema = z.object({
-  name: z.string().trim().min(2, "nameTooShort"),
-  email: z.string().trim().toLowerCase().pipe(z.email("invalidEmail")),
-  password: z.string().min(8, "passwordTooShort"),
-  phone: z.string().trim().optional(),
-  role: z.enum(["HELPER", "REQUESTER"]),
-});
+/** Strips everything but digits and a leading "+" so phone numbers entered
+ * in different formats (spaces, dashes, parens) still match on lookup. */
+export function normalizePhone(phone: string): string {
+  return phone.trim().replace(/[^\d+]/g, "");
+}
+
+export const SignupSchema = z
+  .object({
+    name: z.string().trim().min(2, "nameTooShort"),
+    email: z.string().trim().toLowerCase().pipe(z.email("invalidEmail")).optional(),
+    phone: z.string().trim().transform(normalizePhone).optional(),
+    password: z.string().min(8, "passwordTooShort"),
+    role: z.enum(["HELPER", "REQUESTER"]),
+  })
+  .refine((data) => Boolean(data.email) || Boolean(data.phone), {
+    message: "emailOrPhoneRequired",
+    path: ["email"],
+  });
 
 export const LoginSchema = z.object({
-  email: z.string().trim().toLowerCase().pipe(z.email("invalidEmail")),
+  identifier: z.string().trim().min(1, "requiredField"),
   password: z.string().min(1, "requiredField"),
 });
 
