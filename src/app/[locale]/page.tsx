@@ -45,7 +45,7 @@ export default async function HomePage({
         <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl">
           {dict.home.heroTitle}
         </h1>
-        <p className="max-w-2xl text-lg leading-relaxed">{dict.home.heroSubtitle}</p>
+        {/* <p className="max-w-2xl text-lg leading-relaxed">{dict.home.heroSubtitle}</p> */}
         {homeBodyHtml && (
           <div
             className="max-w-2xl rounded-2xl border border-border bg-surface p-4 leading-relaxed shadow-warm-sm [&_a]:underline [&_a]:text-accent [&_p+p]:mt-3"
