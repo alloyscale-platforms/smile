@@ -26,7 +26,7 @@ export function RequestCard({
   return (
     <Link
       href={`/${locale}/requests/${request.id}`}
-      className="flex flex-col gap-3 rounded-2xl border border-border bg-surface p-5 hover:border-accent"
+      className="flex flex-col gap-3 rounded-2xl border border-border bg-surface p-5 shadow-warm-sm transition-warm hover:-translate-y-1 hover:border-accent hover:shadow-warm-md"
     >
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-2xl" aria-hidden>

@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
+import { Be_Vietnam_Pro } from "next/font/google";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { getDictionary, hasLocale, locales } from "@/i18n/dictionaries";
 import { getCurrentUser } from "@/lib/dal";
 import { Nav } from "@/components/Nav";
 import "../globals.css";
+
+const beVietnamPro = Be_Vietnam_Pro({
+  subsets: ["latin", "vietnamese"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-sans",
+  display: "swap",
+});
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -38,6 +46,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
+      className={beVietnamPro.variable}
       data-text-size={textSize === "lg" || textSize === "xl" ? textSize : undefined}
       data-contrast={contrast ? "high" : undefined}
     >

@@ -5,8 +5,13 @@
   --foreground: #1f2933;
   --accent: #b5541e;
   --accent-foreground: #ffffff;
+  --accent-secondary: #2f6b5e;
+  --accent-secondary-foreground: #ffffff;
+  --highlight: #d9a441;
+  --highlight-foreground: #3d2b00;
   --surface: #ffffff;
   --border: #d9cdbf;
+  --shadow-color: 181 84 30;
 }
 
 @theme inline {
@@ -14,6 +19,10 @@
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-secondary-foreground: var(--accent-secondary-foreground);
+  --color-highlight: var(--highlight);
+  --color-highlight-foreground: var(--highlight-foreground);
   --color-surface: var(--surface);
   --color-border: var(--border);
   --font-sans: var(--font-sans);
@@ -36,8 +45,21 @@ html[data-contrast="high"] {
   --foreground: #000000;
   --accent: #7a2e00;
   --accent-foreground: #ffffff;
+  --accent-secondary: #0d4a3a;
+  --accent-secondary-foreground: #ffffff;
+  --highlight: #6b4c00;
+  --highlight-foreground: #ffffff;
   --surface: #ffffff;
   --border: #000000;
+  --shadow-color: 0 0 0;
+}
+
+/* High contrast trades warmth for maximum legibility: flatten tinted
+   badges/panels back to solid outlines instead of soft color washes. */
+html[data-contrast="high"] .tint-panel {
+  background: var(--surface) !important;
+  border-width: 2px !important;
+  border-color: currentColor !important;
 }
 
 body {
@@ -53,4 +75,29 @@ a {
 *:focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a,
+  button,
+  .transition-warm {
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease,
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      opacity 0.15s ease;
+  }
+}
+
+.shadow-warm-sm {
+  box-shadow: 0 4px 14px -6px rgb(var(--shadow-color) / 0.25);
+}
+
+.shadow-warm-md {
+  box-shadow: 0 10px 30px -10px rgb(var(--shadow-color) / 0.3);
+}
+
+.shadow-warm-md:hover {
+  box-shadow: 0 16px 36px -12px rgb(var(--shadow-color) / 0.35);
 }
