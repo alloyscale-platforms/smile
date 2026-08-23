@@ -41,7 +41,9 @@ export default async function LocaleLayout({
   ]);
 
   const textSize = cookieStore.get("text-size")?.value;
-  const contrast = cookieStore.get("contrast")?.value === "high";
+  // High contrast is the default; visitors opt out via the toggle, which
+  // sets the cookie to "normal" explicitly (see AccessibilityToggle).
+  const contrast = cookieStore.get("contrast")?.value !== "normal";
 
   return (
     <html

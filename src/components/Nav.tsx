@@ -17,7 +17,7 @@ export async function Nav({
 }) {
   const cookieStore = await cookies();
   const textSize = (cookieStore.get("text-size")?.value ?? "base") as "base" | "lg" | "xl";
-  const contrast = cookieStore.get("contrast")?.value === "high";
+  const contrast = cookieStore.get("contrast")?.value !== "normal";
   const logoutWithLocale = logout.bind(null, locale);
 
   const navLinks = (
