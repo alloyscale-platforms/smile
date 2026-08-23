@@ -3,6 +3,7 @@ import { marked } from "marked";
 import { getDictionary, hasLocale } from "@/i18n/dictionaries";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
+import { getCurrentUser } from "@/lib/dal";
 import { categoryDictKey } from "@/lib/constants";
 
 // Rotating warm palette for category icon chips — keeps the grid lively
@@ -22,9 +23,10 @@ export default async function HomePage({
   if (!hasLocale(locale)) notFound();
   const dict = await getDictionary(locale);
 
-  const [categories, homePage] = await Promise.all([
+  const [categories, homePage, user] = await Promise.all([
     prisma.helpCategory.findMany({ where: { active: true }, orderBy: { sortOrder: "asc" } }),
     prisma.page.findUnique({ where: { slug: "home" } }),
+    getCurrentUser(),
   ]);
 
   // Page content is admin-authored only (see /admin/pages), never end-user
@@ -32,6 +34,19 @@ export default async function HomePage({
   const homeBodyHtml = homePage
     ? marked.parse(locale === "en" ? homePage.bodyEn : homePage.bodyVi, { async: false })
     : null;
+
+  // Route the hero CTAs based on who's actually looking at the page, instead
+  // of always sending everyone through signup.
+  const needHelpHref = !user
+    ? `/${locale}/signup?role=REQUESTER`
+    : user.status !== "ACTIVE"
+      ? `/${locale}/pending-approval`
+      : `/${locale}/requests/new`;
+  const wantToHelpHref = !user
+    ? `/${locale}/signup?role=HELPER`
+    : user.status !== "ACTIVE"
+      ? `/${locale}/pending-approval`
+      : `/${locale}/requests`;
 
   return (
     <div className="flex flex-col gap-16">
@@ -54,13 +69,13 @@ export default async function HomePage({
         )}
         <div className="flex w-full flex-col gap-4 sm:w-auto sm:flex-row">
           <Link
-            href={`/${locale}/signup?role=REQUESTER`}
+            href={needHelpHref}
             className="rounded-full bg-accent px-8 py-4 text-center text-lg font-semibold text-accent-foreground shadow-warm-md hover:-translate-y-0.5"
           >
             {dict.home.ctaNeedHelp}
           </Link>
           <Link
-            href={`/${locale}/signup?role=HELPER`}
+            href={wantToHelpHref}
             className="rounded-full bg-accent-secondary px-8 py-4 text-center text-lg font-semibold text-accent-secondary-foreground shadow-warm-md hover:-translate-y-0.5"
           >
             {dict.home.ctaWantToHelp}
